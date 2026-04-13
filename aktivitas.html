@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aktivitas Magang — Ahmad Zaki Maulana</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Nav logo white ── */
+    .nav-logo { color: #ffffff !important; }
+
+    /* ── Page wrapper ── */
+    .activity-page {
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      padding: 120px 48px 80px;
+    }
+
+    .activity-page-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+      margin-bottom: 48px;
+    }
+    .back-btn:hover {
+      color: var(--ocean-sky);
+      border-color: rgba(94,184,240,0.35);
+      background: rgba(94,184,240,0.08);
+    }
+    .back-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 56px; }
+    .page-header .section-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      margin-bottom: 16px;
+      padding: 5px 14px;
+      border: 1px solid rgba(0,212,176,0.25);
+      border-radius: var(--radius-xl);
+    }
+    .page-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .page-header h1 em { font-style: italic; color: var(--ocean-sky); display: block; }
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 300;
+      max-width: 480px;
+    }
+
+    /* ── Full timeline ── */
+    .timeline-full {
+      position: relative;
+      padding-left: 36px;
+    }
+    .timeline-full::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: linear-gradient(to bottom,
+        transparent,
+        rgba(94,184,240,0.4) 8%,
+        rgba(94,184,240,0.4) 92%,
+        transparent
+      );
+    }
+
+    /* ── Timeline entry ── */
+    .tl-item {
+      position: relative;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateX(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+    .tl-dot {
+      position: absolute;
+      left: -29px;
+      top: 24px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--ocean-sky);
+      border: 2px solid var(--ocean-deep);
+      box-shadow: 0 0 14px rgba(94,184,240,0.6);
+      transition: var(--transition);
+    }
+    .tl-item:hover .tl-dot {
+      transform: scale(1.4);
+      background: var(--accent-teal);
+    }
+
+    .tl-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 24px 26px;
+      transition: var(--transition);
+    }
+    .tl-card:hover {
+      background: var(--card-hover);
+      border-color: rgba(94,184,240,0.28);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    /* ── Date stamp (Tanggal · Bulan · Tahun) ── */
+    .tl-datestamp {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .tl-datestamp .ds-part {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: var(--radius-xl);
+    }
+    .ds-day   { background: rgba(94,184,240,0.1);  color: var(--ocean-sky);  border: 1px solid rgba(94,184,240,0.2); }
+    .ds-month { background: rgba(0,212,176,0.08);  color: var(--accent-teal); border: 1px solid rgba(0,212,176,0.18); }
+    .ds-year  { background: rgba(201,168,76,0.08); color: var(--accent-gold); border: 1px solid rgba(201,168,76,0.18); }
+    .ds-sep   { color: var(--text-muted); font-size: 0.7rem; }
+
+    .tl-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .tl-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .tl-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Timeline end marker ── */
+    .timeline-end {
+      text-align: center;
+      padding: 32px 0 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+    }
+    .timeline-end span {
+      display: inline-block;
+      padding: 8px 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(12px);
+    }
+
+    @media (max-width: 640px) {
+      .activity-page { padding: 100px 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ocean Background -->
+  <div class="ocean-bg">
+    <div class="wave wave-1"></div>
+    <div class="wave wave-2"></div>
+    <div class="wave wave-3"></div>
+    <div class="bubbles">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">➢ Internship Logbook</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#home"    class="nav-link" data-section="home">Home</a></li>
+      <li><a href="index.html#profile" class="nav-link" data-section="profile">Profile</a></li>
+      <li><a href="aktivitas.html"     class="nav-link active">Activity</a></li>
+      <li><a href="index.html#links"   class="nav-link" data-section="links">Link Alternatif</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="activity-page">
+    <div class="activity-page-inner">
+
+      <!-- Back -->
+      <a href="index.html#activity" class="back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Kembali
+      </a>
+
+      <!-- Header -->
+      <div class="page-header">
+        <span class="section-tag">02 — Activity</span>
+        <h1>Aktivitas Magang<em>Catatan Lengkap</em></h1>
+        <p>Rekam jejak perjalanan PKL dari hari pertama hingga hari ini.</p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-full">
+
+        <!-- ════ ENTRY 1 ════ -->
+        <div class="tl-item" data-delay="0">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-datestamp">
+              <span class="ds-part ds-month">Januari</span>
+              <span class="ds-sep">·</span>
+              <span class="ds-part ds-year">2026</span>
+            </div>
+            <h3>Orientasi & Pengenalan</h3>
+            <p>Hari pertama di tempat magang. Berkenalan dengan seluruh anggota tim, mengenal lingkungan kerja, dan mendapatkan penjelasan tentang alur kerja serta SOP perusahaan. Hari yang penuh semangat dan rasa ingin tahu.</p>
+            <div class="tl-tags">
+              <span class="tag-sm">Adaptasi</span>
+              <span class="tag-sm">Orientasi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ ENTRY 2 ════ -->
+        <div class="tl-item" data-delay="80">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-datestamp">
+              <span class="ds-part ds-month">Januari</span>
+              <span class="ds-sep">·</span>
+              <span class="ds-part ds-year">2026</span>
+            </div>
+            <h3>Belajar & Eksplorasi</h3>
+            <p>Mulai mendalami tugas-tugas teknis yang diberikan mentor. Belajar langsung dari pengalaman nyata ternyata jauh lebih berkesan daripada teori semata. Setiap error yang muncul justru menjadi pelajaran berharga.</p>
+            <div class="tl-tags">
+              <span class="tag-sm">Belajar</span>
+              <span class="tag-sm">Coding</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ ENTRY 3 ════ -->
+        <div class="tl-item" data-delay="160">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-datestamp">
+              <span class="ds-part ds-month">Januari</span>
+              <span class="ds-sep">·</span>
+              <span class="ds-part ds-year">2026</span>
+            </div>
+            <h3>Proyek Pertama</h3>
+            <p>Berkontribusi dalam proyek nyata untuk pertama kalinya. Rasa gugup dan bangga bercampur jadi satu. Berkolaborasi bersama tim senior dan mendapat feedback langsung dari lead — momen yang tidak akan terlupakan.</p>
+            <div class="tl-tags">
+              <span class="tag-sm">Proyek</span>
+              <span class="tag-sm">Kolaborasi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ ENTRY 4 ════ -->
+        <div class="tl-item" data-delay="240">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-datestamp">
+              <span class="ds-part ds-month">Januari</span>
+              <span class="ds-sep">·</span>
+              <span class="ds-part ds-year">2026</span>
+            </div>
+            <h3>Refleksi & Pertumbuhan</h3>
+            <p>Merenungkan semua yang telah dipelajari selama sebulan pertama. Setiap kesalahan adalah guru terbaik. Semangat terus tumbuh hari demi hari, dan target bulan depan sudah mulai terbentuk.</p>
+            <div class="tl-tags">
+              <span class="tag-sm">Refleksi</span>
+              <span class="tag-sm">Tumbuh</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ ENTRY 5 ════ -->
+        <div class="tl-item" data-delay="320">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-datestamp">
+              <span class="ds-part ds-month">Februari</span>
+              <span class="ds-sep">·</span>
+              <span class="ds-part ds-year">2026</span>
+            </div>
+            <h3>Terus Berjalan...</h3>
+            <p>Perjalanan masih berlanjut. Setiap hari membawa tantangan baru dan pelajaran yang tak ternilai harganya. Semangat terus menyala hingga hari terakhir PKL.</p>
+            <div class="tl-tags">
+              <span class="tag-sm">Ongoing</span>
+              <span class="tag-sm">✦</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /timeline-full -->
+
+      <div class="timeline-end">
+        <span>Januari 2026 — Juni 2026 · Siswa PKL SMKN 04 KOTA BEKASI</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Ahmad Zaki Maulana — dibuat dengan inspirasi & krativitas</p>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const spans = hamburger.querySelectorAll('span');
+      if (navLinks.classList.contains('open')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity   = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+      } else {
+        spans[0].style.transform = '';
+        spans[1].style.opacity   = '';
+        spans[2].style.transform = '';
+      }
+    });
+
+    // Timeline fade in
+    const tlItems = document.querySelectorAll('.tl-item');
+    const tlObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = parseInt(entry.target.dataset.delay || '0');
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+          tlObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    tlItems.forEach(item => tlObserver.observe(item));
+  </script>
+</body>
+</html>
