@@ -1,8 +1,3 @@
-/* =============================================
-   BLOG INSPIRASI — MAULANA RIZKI
-   app.js — Interactions & Animations
-   ============================================= */
-
 // ── Nav scrolled state ─────────────────────────
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
